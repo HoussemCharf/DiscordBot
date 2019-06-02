@@ -10,7 +10,7 @@ class Cache():
         # initiating cache and trying to create the folder
         try:
             os.mkdir(self.file)
-            self.logger_info(f"Created dir \"{self.file}\"")
+            self.logger.info(f"Created dir \"{self.file}\"")
         except OSError:
             self.logger.debug(f"cache file not created: File already exists")
     # function to load json cache from cache file

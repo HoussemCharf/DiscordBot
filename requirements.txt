@@ -1,2 +1,3 @@
 arrow
 discord.py
+PyNaCl
