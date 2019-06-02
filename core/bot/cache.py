@@ -1,4 +1,4 @@
-import Logging as Logging
+from core.bot import Logging as Logging
 from config import cache_file
 import arrow, json, os
 

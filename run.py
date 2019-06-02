@@ -10,7 +10,7 @@ import logging
 logger = Logging.get_logger('discord')
 discordV = tuple([int(vnum) for vnum in (re.sub('[^1234567890.]','',discordV)).split('.')])
 
-discordmaj,discordmino,discordmicro = dversion
+discordmaj,discordmino,discordmicro = discordV
 
 if not(discordmaj,discordmino) >= (1, 0):
     print('[ERROR] Wrong version, Use rewrite')
