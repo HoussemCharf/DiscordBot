@@ -1,13 +1,13 @@
 from config import log_file
 from config import file_logging_level
 from config import stream_logging_level
-from config import logging_stdout
+from config import logging_sdtout
 from config import logging_file
 from config import logging_format
 
 import logging
 
-def get_logger(name: str=__name__, flevel=file_logging_level, slevel=stream_logging_level, stdout: bool=logging_stdout, fout: bool=logging_file, format: str=logging_format):
+def get_logger(name: str=__name__, flevel=file_logging_level, slevel=stream_logging_level, stdout: bool=logging_sdtout, fout: bool=logging_file, format: str=logging_format):
     '''
     logger object
     Params:

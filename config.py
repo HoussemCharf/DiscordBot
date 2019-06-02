@@ -1,8 +1,8 @@
 import logging,os
 
 token = os.getenv('bot_token') or '<token>'
-prefix_server = ''
-prefix_dm = ['<prefix>','']
+prefix_server = '!'
+prefix_dm = ['$','']
 description = 'Jiggly is a discord bot designed by Houssem Charfeddine for private purposes'
 pm_help=True
 # cache file path
