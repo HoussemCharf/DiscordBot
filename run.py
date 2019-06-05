@@ -14,9 +14,9 @@ discordmaj,discordmino,discordmicro = discordV
 
 if not(discordmaj,discordmino) >= (1, 0):
     print('[ERROR] Wrong version, Use rewrite')
-    print('[INFO] pip install discord-rewrite')
+    print('[INFO] pip3 install discord-rewrite')
     exit(errno.EINVAL)
 if __name__ == '__main__':
-    os.system('pip install -r requirements.txt')
+    os.system('pip3 install -r requirements.txt')
     bot = Bot()
     bot.run(token)
