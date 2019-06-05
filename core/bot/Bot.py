@@ -2,7 +2,7 @@ from discord.ext import commands
 from discord import __version__ as discordV
 from platform import python_version as python_version
 import asyncio
-
+import inspect
 from core.bot.cache import Cache
 from core.bot import Logging
 
@@ -68,6 +68,48 @@ class Bot(discord.ext.commands.Bot):
         return prefix_server
     async def process_command(self,message):
         message_content = message.content.strip()
+        # escaping messages without invoke prefix
         if not message_content.startswith(self.getPrefix):
             return
-        pass
+        # splitting messages with with args to pass them later on
+        command, *args = message_content.split()
+        # cleaning command and lowering it
+        command = command[len(self.getPrefix):].lower().strip()
+        # [] produces ['']
+        if args:
+            args = ' '.join(args).lstrip(' ').split(' ')
+        # get handler
+        handler=getattr(self,"cmd_%s" %command,None)
+        # escaping empty handlers for vain invokes.
+        if not handler:
+            return
+        argspec = inspect.signature(handler)
+        params = argspec.parameters.copy()
+        sent_message=response=None
+        try:
+            handler_kwargs={}
+            if params.pop('message',None):
+                handler_kwargs['message']=message
+            if params.pop('channel',None):
+                handler_kwargs['channel']=message.channel
+            if params.pop('author', None):
+                handler_kwargs['author'] = message.author
+            if params.pop('guild', None):
+                handler_kwargs['guild'] = message.guild
+            if params.pop('user_mentions', None):
+                handler_kwargs['user_mentions'] = list(map(message.guild.get_member, message.raw_mentions))
+            if params.pop('channel_mentions', None):
+                handler_kwargs['channel_mentions'] = list(map(message.guild.get_channel, message.raw_channel_mentions))
+            if params.pop('voice_channel', None):
+                handler_kwargs['voice_channel'] = message.guild.me.voice.channel if message.guild.me.voice else None
+            if params.pop('leftover_args', None):
+                handler_kwargs['leftover_args'] = args
+            args_expected= []
+            for key,param in list(params.items()):
+                if param.kind == param.VAR_POSITIONAL:
+                    handler_kwargs[key] =args
+                    params.pop(key)
+                    continue
+            response = await handler(**handler_kwargs)
+        except Exception:
+            self.logger.error("Error in On_message handler")
