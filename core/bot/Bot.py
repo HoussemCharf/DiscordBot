@@ -67,4 +67,7 @@ class Bot(discord.ext.commands.Bot):
     async def getPrefix(self):
         return prefix_server
     async def process_command(self,message):
+        message_content = message.content.strip()
+        if not message_content.startswith(self.getPrefix):
+            return
         pass
